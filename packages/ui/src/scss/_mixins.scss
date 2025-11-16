@@ -1,0 +1,81 @@
+// 타이틀
+@mixin _ky-apply($size, $weight, $line-height, $letter-spacing: null) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  @if $letter-spacing != null {
+    letter-spacing: $letter-spacing;
+  }
+}
+
+@mixin ky-headline($font-size: 3.2rem, $font-weight: 700, $line-height: 1.4, $letter-spacing: -0.015em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-title($font-size: 2.8rem, $font-weight: 600, $line-height: 1.4, $letter-spacing: -0.01em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-sub-title($font-size: 2.4rem, $font-weight: 600, $line-height: 1.4, $letter-spacing: -0.01em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-body-lg($font-size: 1.8rem, $font-weight: 400, $line-height: 1.4, $letter-spacing: null) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-body($font-size: 1.6rem, $font-weight: 400, $line-height: 1.4, $letter-spacing: null) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-label($font-size: 1.4rem, $font-weight: 500, $line-height: 1.4, $letter-spacing: 0.01em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-desc($font-size: 1.3rem, $font-weight: 400, $line-height: 1.4, $letter-spacing: 0.01em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+@mixin ky-caption($font-size: 1.2rem, $font-weight: 400, $line-height: 1.4, $letter-spacing: 0.01em) {
+  @include _ky-apply($font-size, $font-weight, $line-height, $letter-spacing);
+}
+
+/* margin, padding */
+$max: 72; 
+$space-steps: 72 !default; 
+$space-unit:  .1rem !default; 
+$space-multiple: 4 !default; 
+
+@mixin _space-classes($prop, $prefix, $max: $space-steps, $unit: $space-unit, $multiple: $space-multiple) {
+  @for $i from 0 through $max {
+    @if ($i % $multiple == 0) {
+      $val: $i * $unit;
+      .#{$prefix}a-#{$i} { #{$prop}: $val !important; }
+      .#{$prefix}l-#{$i} { #{$prop}-left: $val !important; }
+      .#{$prefix}r-#{$i} { #{$prop}-right: $val !important; }
+      .#{$prefix}t-#{$i} { #{$prop}-top: $val !important; }
+      .#{$prefix}b-#{$i} { #{$prop}-bottom: $val !important; }
+    }
+  }
+}
+
+@mixin margin-classes($max: $space-steps, $unit: $space-unit, $multiple: $space-multiple) {
+  @include _space-classes(margin, m, $max, $unit, $multiple);
+}
+@mixin padding-classes($max: $space-steps, $unit: $space-unit, $multiple: $space-multiple) {
+  @include _space-classes(padding, p, $max, $unit, $multiple);
+}
+
+@include margin-classes(); 
+@include padding-classes();
+
+/* 숨김 */
+@mixin ky-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px; 
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0); 
+  white-space: nowrap; 
+  border: 0;
+}
