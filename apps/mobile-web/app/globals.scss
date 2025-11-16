@@ -1,0 +1,5 @@
+@use '@kiwoom_ex/ui/src/scss/base' as base;   /* 패키지의 전역 베이스 */
+@use '@kiwoom_ex/ui/src/scss/tokens' as tokens; /* 디자인 토큰 (변수만 노출 시 Modules로도 가능) */
+
+/* 앱 전용 Global */
+:root { --content-max: 1200px; }
