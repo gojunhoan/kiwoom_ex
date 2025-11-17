@@ -450,6 +450,10 @@
             color: kvar.$ky-primary;
             font-weight: 700;
             background-color: rgba(kvar.$ky-primary, 0.05);
+            > span {
+              color: kvar.$ky-primary;
+              font-weight: 700;
+            }
           }
 
           &:checked[disabled] + label {

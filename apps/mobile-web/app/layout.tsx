@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "./globals.scss";
+import "../public/scss/globals.scss";
+import "../public/scss/base.scss";
 
 export const metadata: Metadata = {
   title: "Kiwoom Mobile",
@@ -11,7 +12,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body className="antialiased">
+      <body>
         {children}
       </body>
     </html>

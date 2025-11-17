@@ -83,7 +83,7 @@ export default function PublishingIndex() {
                 <td></td>
                 <td></td>
                 <td className={s["align-c"]}>
-                  <a href="#" target="_blank" rel="noopener noreferrer">
+                  <a href="../" target="_blank" rel="noopener noreferrer">
                     APP-MA-2AA-3xx-V001
                   </a>
                 </td>

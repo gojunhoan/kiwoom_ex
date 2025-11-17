@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import TextField from "../../../packages/ui/mobile/components/TextField";
+import { Radio, RadioGroup } from "../../../packages/ui/mobile/components/Radio";
 
 
 export const metadata: Metadata = {
@@ -50,28 +51,33 @@ export default function LoanStep1Page() {
           <div className="form-area">
             <div className="form-item">
               <div className="label">직업</div>
-              <div className="check-group check-type--box split-2">
-                <div className="check-item">
-                  <input
-                    type="radio"
-                    className="input"
-                    id="jobSelect-0"
-                    name="jobSelect"
-                  />
-                  <label htmlFor="jobSelect-0">직장인</label>
-                </div>
-                <div className="check-item">
-                  <input
-                    type="radio"
-                    className="input"
-                    id="jobSelect-1"
-                    name="jobSelect"
-                  />
-                  <label htmlFor="jobSelect-1">개인사업자</label>
-                </div>
-              </div>
+              <RadioGroup variantClassName="check-type--box" layoutClassName="split-2" roleGroupLabel="직업 선택">
+                <Radio name="job" value="직장인" label="직장인" />
+                <Radio name="job" value="개인사업자" label="개인사업자" />
+              </RadioGroup>
             </div>
-
+            <div className="form-item">
+              <TextField
+                label="금액"
+                placeholder="0"
+                inputMode="numeric"
+                unitText="원"
+                unitLayout="one"
+                id="amount"
+                error=""
+              />
+            </div>
+            <div className="form-item">
+              <TextField
+                label="금액"
+                placeholder="0"
+                inputMode="numeric"
+                unitText="원"
+                unitLayout="one"
+                id="amount1"
+                error=""
+              />
+            </div>
             <div className="form-item">
               <div className="ipt-group">
                 <div className="label">자금사용 용도</div>
