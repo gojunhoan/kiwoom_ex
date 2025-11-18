@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "../public/scss/globals.scss";
-import "../public/scss/base.scss";
+import "../scss/globals.scss";
+import "../scss/base.scss";
 
 export const metadata: Metadata = {
   title: "Kiwoom Mobile",
