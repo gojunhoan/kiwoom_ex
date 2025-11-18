@@ -13,7 +13,7 @@ export default function LoanPage() {
   const [sheetOpen1, setSheetOpen1] = useState(false);
   return (
     <KyMoLayout 
-      title="가계주택담보대출 신청"
+      title="가계주택담보대출 신청1"
       showHome={false}
       showCancel={true}
       // showMenu={false} 기본값 false 
