@@ -6,6 +6,7 @@ import { Tooltip } from '../../../../packages/ui/mobile/components/common/Toolti
 import { Tabs } from '../../../../packages/ui/mobile/components/common/Tabs';
 import { Accordion } from '../../../../packages/ui/mobile/components/common/Accordion';
 import { Toggle } from '../../../../packages/ui/mobile/components/common/Toggle';
+import TermsAgreement from '../../../../packages/ui/mobile/components/common/TermsAgreement';
 import Link from 'next/link';
 
 
@@ -106,6 +107,53 @@ export default function ExamplePage() {
           신규 회원 가입 시 <em className="text-blue-600 not-italic">3,000원 할인 쿠폰</em>을 즉시 지급해 드립니다.
         </span>
       ),
+    },
+  ];
+  
+  // 서버 컴포넌트 영역: 여기서 데이터를 정의하거나 API를 호출합니다.
+  const TERMS_DATA: TermParent[] = [
+    {
+      id: 'term_1',
+      label: '계약진행을 위한 개인(신용)정보 동의',
+      required: true,
+      children: [
+        { id: 'term_1_1', label: '수집·이용에 관한 사항' },
+        { id: 'term_1_2', label: '조회에 관한 사항' },
+        { id: 'term_1_3', label: '제공에 관한 사항' },
+        { id: 'term_1_4', label: '[국외]제공에 관한 사항' },
+        { id: 'term_1_5', label: '개인(신용)정보 동의 관련 추가확인사항' },
+      ],
+    },
+    {
+      id: 'term_2',
+      label: '휴대폰 인증 진행을 위한 개인(신용)정보처리 동의',
+      required: true,
+      children: [
+        { id: 'term_2_1', label: '개인(신용)정보의 수집·이용에 대한 필수적 동의' },
+        { id: 'term_2_2', label: '개인고유식별정보(주민등록번호) 처리에 대한 필수적 동의' },
+        { id: 'term_2_3', label: '서비스 이용약관에 대한 필수적 동의' },
+        { id: 'term_2_4', label: '통신사 이용약관에 대한 필수적 동의' },
+      ],
+    },
+    {
+      id: 'term_3',
+      label: '비대면 실명인증 진행을 위한 개인(신용)정보처리 동의',
+      required: true,
+      children: [
+        { id: 'term_3_1', label: '수집·이용에 관한 사항' },
+        { id: 'term_3_2', label: '제공에 관한 사항' },
+      ],
+    },
+    {
+      id: 'term_4',
+      label: '전자금융거래 기본약관 동의',
+      required: true,
+      // 자식 항목 없음
+    },
+    {
+      id: 'term_5',
+      label: '보험 및 금융상품 소개를 위한 개인신용정보 동의',
+      required: false, 
     },
   ];
 
@@ -285,6 +333,9 @@ export default function ExamplePage() {
               { label: '공지사항 2', content: '내용입니다...' }
             ]} 
           />
+        </section>
+        <section>
+          <TermsAgreement items={TERMS_DATA} />          
         </section>
         
       </div>

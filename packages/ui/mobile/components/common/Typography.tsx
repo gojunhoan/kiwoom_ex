@@ -11,8 +11,7 @@ interface TitleProps {
 
 export const Title = ({ level, children, as, className = '' }: TitleProps) => {
   const Tag = as || (level === 7 ? 'p' : (`h${level}` as React.ElementType));
-  // [Global] ui-title 클래스와 level-x 클래스 조합
-  return <Tag className={`ui-tit${level} ${className}`}>{children}</Tag>;
+  return <Tag className={`tit-h${level} ${className}`}>{children}</Tag>;
 };
 
 // TextList
@@ -33,7 +32,6 @@ export const TextList = ({
   className = '' 
 }: TextListProps) => {
   return (
-    // [Global] ui-list 클래스 사용
     <Container className={`ui-list ${type} ${className}`}>
       {items.map((item, idx) => (
         <Item key={idx} className="list-item">{item}</Item>

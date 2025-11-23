@@ -6,7 +6,7 @@ interface TabItem {
   content: React.ReactNode;
 }
 
-export const Tabs = ({ type = 'line', items }: { type?: 'line'|'rect'|'circle', items: TabItem[] }) => {
+export const Tabs = ({ type = 'line', items }: { type?: 'line'|'rect'|'round', items: TabItem[] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const baseId = useId();
 
