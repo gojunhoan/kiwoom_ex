@@ -6,7 +6,7 @@ import { Tooltip } from '../../../../packages/ui/mobile/components/common/Toolti
 import { Tabs } from '../../../../packages/ui/mobile/components/common/Tabs';
 import { Accordion } from '../../../../packages/ui/mobile/components/common/Accordion';
 import { Toggle } from '../../../../packages/ui/mobile/components/common/Toggle';
-import TermsAgreement from '../../../../packages/ui/mobile/components/common/TermsAgreement';
+import TermsAgreement, { type TermParent } from '../../../../packages/ui/mobile/components/common/TermsAgreement';
 import Link from 'next/link';
 
 

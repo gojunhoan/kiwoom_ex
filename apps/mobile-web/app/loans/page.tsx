@@ -1,16 +1,29 @@
-"use client";
-import { useState } from "react";
+import React from "react";
 
 import KyMoLayout from "../../../../packages/ui/mobile/components/Layout/KyMoLayout";
 import TextField from "../../../../packages/ui/mobile/components/common/TextField";
 import { Radio, RadioGroup } from "../../../../packages/ui/mobile/components/common/Radio";
-import { RadioButtonGroup } from "../../../../packages/ui/mobile/components/common/RadioButton";
 import Button from "../../../../packages/ui/mobile/components/common/Button";
-import BottomSheet from "../../../../packages/ui/mobile/components/popup/BottomSheet";
+import SelectBox, { type OptionType } from "../../../../packages/ui/mobile/components/common/SelectBox";
 
 export default function LoanPage() {
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const [sheetOpen1, setSheetOpen1] = useState(false);
+  
+  // 명의자 선택
+  const OWNER_OPTIONS1: OptionType[] = [
+    { value: "본인", label: "본인" },
+    { value: "배우자", label: "배우자" },
+    { value: "공동명의", label: "공동명의(본인+배우자)" },
+    { value: "기타", label: "기타" },
+  ];
+
+  // 명의자 선택1
+  const OWNER_OPTIONS: OptionType[] = [
+    { value: "본인", label: "본인" },
+    { value: "배우자", label: "배우자" },
+    { value: "공동명의(본인+배우자)", label: "공동명의(본인+배우자)" },
+    { value: "기타", label: "기타" },
+  ];
+
   return (
     <KyMoLayout 
       title="가계주택담보대출 신청"
@@ -48,7 +61,11 @@ export default function LoanPage() {
           </div>
           <div className="form-item">
             <div className="label">자금사용 용도</div>
-            <Button variant="select" onClick={() => setSheetOpen(true)}>선택</Button>
+            
+            <SelectBox
+              title="명의자" 
+              options={OWNER_OPTIONS1} 
+            />
           </div>
           <h3 className="tit-h6">주택정보</h3>
           <div className="form-item">
@@ -109,7 +126,10 @@ export default function LoanPage() {
           </div>
           <div className="form-item">
             <div className="label">명의자</div>
-            <Button variant="select" onClick={() => setSheetOpen1(true)}>선택</Button>
+            <SelectBox
+              title="선택" 
+              options={OWNER_OPTIONS} 
+            />
           </div>
           <div className="form-item">
             <div className="label">거주 여부</div>
@@ -155,42 +175,6 @@ export default function LoanPage() {
           <Button variant="pri" disabledClassOnly>다음</Button>
         </div>
       </div>
-
-      {/* 자금사용 용도 BS */}
-      <BottomSheet
-        open={sheetOpen}
-        onClose={() => setSheetOpen(false)}
-        title="자금사용 용도"
-      >
-        <RadioButtonGroup
-          options={[
-            { value: "생활자금", label: "생활자금" },
-            { value: "사업자금", label: "사업자금" },
-            { value: "구입자금", label: "개인사업자" },
-            { value: "세입자 퇴거자금", label: "세입자 퇴거자금" },
-          ]}
-          layoutClassName="split-1"
-          roleGroupLabel="자금사용 용도 선택"
-        />
-      </BottomSheet>
-
-      {/* 명의자 BS */}
-      <BottomSheet
-        open={sheetOpen1}
-        onClose={() => setSheetOpen1(false)}
-        title="명의자"
-      >        
-        <RadioButtonGroup
-          options={[
-            { value: "본인", label: "본인" },
-            { value: "배우자", label: "배우자" },
-            { value: "공동명의(본인+배우자)", label: "공동명의(본인+배우자)" },
-            { value: "기타", label: "기타" },
-          ]}
-          layoutClassName="split-1"
-          roleGroupLabel="명의자 선택"
-        />
-      </BottomSheet>
     </KyMoLayout>
   );
 }
