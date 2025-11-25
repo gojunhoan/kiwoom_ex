@@ -1,10 +1,10 @@
 import React from "react";
 
-import KyMoLayout from "../../../../packages/ui/mobile/components/Layout/KyMoLayout";
-import TextField from "../../../../packages/ui/mobile/components/common/TextField";
-import { Radio, RadioGroup } from "../../../../packages/ui/mobile/components/common/Radio";
-import Button from "../../../../packages/ui/mobile/components/common/Button";
-import SelectBox, { type OptionType } from "../../../../packages/ui/mobile/components/common/SelectBox";
+import KyMoLayout from "@kiwoom_ex/ui/mobile/components/Layout/KyMoLayout";
+import TextField from "@kiwoom_ex/ui/mobile/components/common/TextField";
+import { Radio, RadioGroup } from "@kiwoom_ex/ui/mobile/components/common/Radio";
+import Button from "@kiwoom_ex/ui/mobile/components/common/Button";
+import SelectBox, { type OptionType } from "@kiwoom_ex/ui/mobile/components/common/SelectBox";
 
 export default function LoanPage() {
   
