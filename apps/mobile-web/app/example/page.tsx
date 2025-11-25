@@ -1,12 +1,12 @@
 
 import React from 'react';
-import KyMoLayout from "@kiwoom_ex/ui/mobile/components/Layout/KyMoLayout";
-import { Title, TextList } from '@kiwoom_ex/ui/mobile/components/common/Typography';
-import { Tooltip } from '@kiwoom_ex/ui/mobile/components/common/Tooltip';
-import { Tabs } from '@kiwoom_ex/ui/mobile/components/common/Tabs';
-import { Accordion } from '@kiwoom_ex/ui/mobile/components/common/Accordion';
-import { Toggle } from '@kiwoom_ex/ui/mobile/components/common/Toggle';
-import TermsAgreement, { type TermParent } from '@kiwoom_ex/ui/mobile/components/common/TermsAgreement';
+import KyMoLayout from "../../../../packages/ui/mobile/components/Layout/KyMoLayout";
+import { Title, TextList } from '../../../../packages/ui/mobile/components/common/Typography';
+import { Tooltip } from '../../../../packages/ui/mobile/components/common/Tooltip';
+import { Tabs } from '../../../../packages/ui/mobile/components/common/Tabs';
+import { Accordion } from '../../../../packages/ui/mobile/components/common/Accordion';
+import { Toggle } from '../../../../packages/ui/mobile/components/common/Toggle';
+import TermsAgreement, { type TermParent } from '../../../../packages/ui/mobile/components/common/TermsAgreement';
 import Link from 'next/link';
 
 
