@@ -14,9 +14,6 @@ export default function LoanPage() {
   return (
     <KyMoLayout 
       title="가계주택담보대출 신청"
-      showHome={false}
-      showCancel={true}
-      // showMenu={false} 기본값 false 
     >
       <div className="ky-mo-contents">
         <div className="title-area">
