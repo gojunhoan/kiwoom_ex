@@ -5,6 +5,7 @@ import TextField from "../../../../packages/ui/mobile/components/common/TextFiel
 import { Radio, RadioGroup } from "../../../../packages/ui/mobile/components/common/Radio";
 import Button from "../../../../packages/ui/mobile/components/common/Button";
 import SelectBox, { type OptionType } from "../../../../packages/ui/mobile/components/common/SelectBox";
+import LoanStep from './LoanStep';
 
 export default function LoanPage() {
   
@@ -26,29 +27,20 @@ export default function LoanPage() {
 
   return (
     <KyMoLayout 
-      title="가계주택담보대출 신청"
-      showHome={false}
-      hideTitle
-    //   showCancel={true}
-      // showMenu={false} 기본값 false 
+      title="가계주택담보대출 신청"bottom={
+        <div className="btn-group">
+          <Button variant="pri"  disabledClassOnly>
+            다음
+          </Button>
+        </div>
+      }
     >
-      <div className="ky-mo-contents">
+        <LoanStep 
+          title="고객정보 입력" 
+          currentStep={1} 
+          totalSteps={4} 
+        />
         <div className="title-area">
-          <nav className="step-wrap" aria-label="진행 단계">
-            <h2 className="step-tit">한도조회</h2>
-            <ol className="step-num">
-              <li className="selected" aria-current="step">
-                <span className="ky-hide">현재 단계: </span>
-                1
-                <span className="ky-hide"> / 총 4단계 중 1단계</span>
-              </li>
-              <li>
-                <span className="ky-hide">다음 단계: </span>2
-              </li>
-              <li>3</li>
-              <li>4</li>
-            </ol>
-          </nav>
           <div className="txt-body">고객님의 정보를 알려주세요</div>
         </div>
 
@@ -170,12 +162,6 @@ export default function LoanPage() {
             />
           </div>
         </div>
-      </div>
-      <div className="bottom-area">
-        <div className="btn-group">
-          <Button variant="pri" disabledClassOnly>다음</Button>
-        </div>
-      </div>
     </KyMoLayout>
   );
 }

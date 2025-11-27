@@ -7,16 +7,46 @@
     margin-top: 2.4rem;
   }
 }
+
 .step-wrap {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 5.6rem;
+  left: 0;
+  width: 100%;
+  background-color: kvar.$white;
+  z-index: 99;
+  padding: 0 2.4rem;
+  height: 6rem;
+
+  .step-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 2.4rem;
+    right: 2.4rem;
+    width: calc(100% - 4.8rem);
+    height: 0.4rem;
+    background-color: #f0f0f0;
+
+    .bar {
+      display: block;
+      height: 100%;
+      background-color: kvar.$ky-primary;
+      transition: width 0.3s ease;
+    }
+  }
+
   .step-tit {
     @include kmix.ky-title(2.2rem, 600, 2.4rem);
+    color: #000;
   }
+
   .step-num {
     display: flex;
     gap: 0.4rem;
+
     li {
       width: 2.4rem;
       height: 2.4rem;
@@ -25,8 +55,31 @@
       @include kmix.ky-desc(1.3rem, 500, 2.4rem);
       background-color: #ddd;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       &.selected {        
         background-color: kvar.$ky-primary;
+        font-weight: 700;
+      }
+
+      &.ok {
+        position: relative;
+        color: transparent;
+        
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          content: '';
+          display: block;
+          width: 2.4rem;
+          height: 2.4rem;     
+          border-radius: 50%;     
+          background: url('/images/common/ico_loan_step_ok.svg') no-repeat center;
+          background-size: 2.4rem;
+        }
       }
     }
   }
