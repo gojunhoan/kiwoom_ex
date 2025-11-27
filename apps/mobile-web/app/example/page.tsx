@@ -139,8 +139,19 @@ export default function ExamplePage() {
       id: 'term_3',
       label: '비대면 실명인증 진행을 위한 개인(신용)정보처리 동의',
       required: true,
-      children: [
-        { id: 'term_3_1', label: '수집·이용에 관한 사항' },
+    children: [
+      { 
+        id: 'term_3_1', 
+        label: '수집·이용에 관한 사항', 
+        required: false,
+        hideDetailBtn: true,
+        children: [
+           { id: 'term_3_1_1', label: '고유식별정보 처리 동의', required: false, hideDetailBtn: true },
+           { id: 'term_3_1_2', label: '바이오정보 처리 동의', required: false, hideDetailBtn: true },
+           { id: 'term_3_1_3', label: '통신사 이용약관 동의', required: false, hideDetailBtn: true },
+           { id: 'term_3_1_4', label: '서비스 이용약관 동의', required: false, hideDetailBtn: true },
+        ]
+      },
         { id: 'term_3_2', label: '제공에 관한 사항' },
       ],
     },

@@ -16,12 +16,14 @@ export interface TermFooterConfig {
   cancelLabel?: string;  // 취소(닫기) 버튼 텍스트 (값이 있으면 버튼 노출)
   hideFooter?: boolean;  // true일 경우 푸터 숨김
 }
-
 export interface TermChild {
   id: string;
   label: string;
+  required?: boolean;      // false일 경우 (선택)
+  hideDetailBtn?: boolean; // 상세보기 화살표 숨김 여부
+  children?: TermChild[];  // [추가] 3단계(Sub-Child) 지원
   content?: React.ReactNode; 
-  footerConfig?: TermFooterConfig; // 개별 설정 추가
+  footerConfig?: TermFooterConfig;
 }
 
 export interface TermParent {
@@ -47,7 +49,18 @@ export default function TermsAgreement({ items, allAgreePopupConfig }: TermsAgre
 
   // ... (기존 로직: allIds, handleAllCheck, handleParentCheck, handleChildCheck 등은 그대로 유지) ...
   // (코드 중략 - 기존과 동일)
-  const allIds = useMemo(() => { const ids: string[] = []; items.forEach(p => { ids.push(p.id); p.children?.forEach(c => ids.push(c.id)); }); return ids; }, [items]);
+const allIds = useMemo(() => {
+    const ids: string[] = [];
+    items.forEach(p => {
+      ids.push(p.id);
+      p.children?.forEach(c => {
+        ids.push(c.id);
+        // 3단계 자식 ID 추출
+        c.children?.forEach(sc => ids.push(sc.id));
+      });
+    });
+    return ids;
+  }, [items]);
   const isAllChecked = allIds.length > 0 && allIds.every(id => checkedIds.has(id));
   const handleAllCheckClick = (e: React.MouseEvent<HTMLInputElement>) => {
     // 1. 기본 체크 동작 막기 (React 제어 컴포넌트 패턴)
@@ -81,10 +94,77 @@ export default function TermsAgreement({ items, allAgreePopupConfig }: TermsAgre
   };
 
   // 부모 체크 핸들러 (재사용을 위해 분리하거나 기존 코드 사용)
-  const handleParentCheck = (parent: TermParent) => { const newChecked = new Set(checkedIds); const allRelated = [parent.id, ...(parent.children?.map(c=>c.id)||[])]; if(checkedIds.has(parent.id)) allRelated.forEach(id=>newChecked.delete(id)); else allRelated.forEach(id=>newChecked.add(id)); setCheckedIds(newChecked); };
+  const handleParentCheck = (parent: TermParent) => {
+    const newChecked = new Set(checkedIds);
+    // 1단계, 2단계, 3단계 ID 모두 수집
+    const allRelated = [parent.id];
+    parent.children?.forEach(c => {
+      allRelated.push(c.id);
+      c.children?.forEach(sc => allRelated.push(sc.id));
+    });
+
+    // 토글 로직
+    if (checkedIds.has(parent.id)) {
+      allRelated.forEach(id => newChecked.delete(id));
+    } else {
+      allRelated.forEach(id => newChecked.add(id));
+    }
+    setCheckedIds(newChecked);
+  };
   
   // 자식 체크 핸들러
-  const handleChildCheck = (childId: string, parent: TermParent) => { const newChecked = new Set(checkedIds); if(newChecked.has(childId)) { newChecked.delete(childId); newChecked.delete(parent.id); } else { newChecked.add(childId); if(parent.children?.every(c=>c.id===childId||newChecked.has(c.id))) newChecked.add(parent.id); } setCheckedIds(newChecked); };
+  const handleChildCheck = (childId: string, parent: TermParent, childItem: TermChild) => {
+    const newChecked = new Set(checkedIds);
+    
+    // 본인 및 하위(3단계) ID 목록
+    const selfAndSubs = [childId, ...(childItem.children?.map(sc => sc.id) || [])];
+
+    if (newChecked.has(childId)) {
+      // 해제 시: 본인과 하위 모두 해제, 부모(1단계)도 해제
+      selfAndSubs.forEach(id => newChecked.delete(id));
+      newChecked.delete(parent.id);
+    } else {
+      // 체크 시: 본인과 하위 모두 체크
+      selfAndSubs.forEach(id => newChecked.add(id));
+      
+      // 부모(1단계) 체크 여부 확인 (형제들의 필수 여부 확인)
+      // 주의: 형제들 중 '필수'인 항목들이 모두 체크되어야 부모 체크
+      const siblings = parent.children || [];
+      const allRequiredSiblingsChecked = siblings.every(sib => 
+        (sib.required === false) || // 선택항목은 패스
+        sib.id === childId ||       // 방금 체크한 항목
+        newChecked.has(sib.id)      // 이미 체크된 항목
+      );
+      
+      if (allRequiredSiblingsChecked) newChecked.add(parent.id);
+    }
+    setCheckedIds(newChecked);
+  };
+
+  const handleSubChildCheck = (subId: string, parent: TermParent, child: TermChild) => {
+    const newChecked = new Set(checkedIds);
+    
+    if (newChecked.has(subId)) {
+      newChecked.delete(subId);
+      // 3단계 선택약관 해제 시 상위(2단계)가 필수라면 해제하지 않음 (일반적 로직)
+      // 단, 2단계도 풀고 싶다면: newChecked.delete(child.id); newChecked.delete(parent.id);
+    } else {
+      newChecked.add(subId);
+      // 3단계 체크 시 상위(2단계) 자동 체크? 
+      // 보통 하위를 체크하면 상위 그룹도 체크되는 것이 UX상 자연스러움
+      newChecked.add(child.id); 
+
+      // 2단계가 체크되었으니 1단계(최상위)도 체크 확인
+      const siblings = parent.children || [];
+      const allRequiredSiblingsChecked = siblings.every(sib => 
+        (sib.required === false) || 
+        sib.id === child.id || 
+        newChecked.has(sib.id)
+      );
+      if (allRequiredSiblingsChecked) newChecked.add(parent.id);
+    }
+    setCheckedIds(newChecked);
+  };
 
   const toggleAccordion = (parentId: string) => {
     const newExpanded = new Set(expandedIds);
@@ -101,16 +181,49 @@ export default function TermsAgreement({ items, allAgreePopupConfig }: TermsAgre
   const handleAgreeAndClose = () => {
     if (!activeTerm) return;
 
-    // 현재 팝업의 약관이 부모인지 자식인지 찾아서 체크 로직 수행
-    const parent = items.find(p => p.id === activeTerm.id || p.children?.some(c => c.id === activeTerm.id));
-    
-    if (parent) {
+    // activeTerm이 전체 데이터 중 어디에 속하는지 탐색 (1단계 ~ 3단계)
+    for (const parent of items) {
+      
+      // Case 1: 현재 팝업이 '부모(1단계)' 약관인 경우
       if (parent.id === activeTerm.id) {
-        // 부모 약관인 경우 -> 체크 안되어있으면 체크
-        if (!checkedIds.has(activeTerm.id)) handleParentCheck(parent);
-      } else {
-        // 자식 약관인 경우 -> 체크 안되어있으면 체크
-        if (!checkedIds.has(activeTerm.id)) handleChildCheck(activeTerm.id, parent);
+        if (!checkedIds.has(parent.id)) {
+          handleParentCheck(parent);
+        }
+        break; // 찾았으니 루프 종료
+      }
+
+      // 자식 탐색
+      if (parent.children) {
+        for (const child of parent.children) {
+          
+          // Case 2: 현재 팝업이 '자식(2단계)' 약관인 경우
+          if (child.id === activeTerm.id) {
+            if (!checkedIds.has(child.id)) {
+              // [수정] 3번째 인자로 child 객체(본인)를 넘겨줍니다.
+              handleChildCheck(child.id, parent, child);
+            }
+            // 찾았으니 함수 종료(또는 break)를 위해 플래그 처리 필요하지만, 
+            // 여기서는 return 없이 closeDetailPopup 호출로 이어지게 break 사용
+            closeDetailPopup(); 
+            return; 
+          }
+
+          // 손자 탐색 (3단계)
+          if (child.children) {
+            for (const sub of child.children) {
+              
+              // Case 3: 현재 팝업이 '손자(3단계)' 약관인 경우
+              if (sub.id === activeTerm.id) {
+                if (!checkedIds.has(sub.id)) {
+                  // [추가] 3단계 핸들러 호출
+                  handleSubChildCheck(sub.id, parent, child);
+                }
+                closeDetailPopup();
+                return;
+              }
+            }
+          }
+        }
       }
     }
 
@@ -211,22 +324,51 @@ export default function TermsAgreement({ items, allAgreePopupConfig }: TermsAgre
                 <div id={`panel_${parent.id}`} className="terms-accor-body" style={{ display: isExpanded ? 'block' : 'none' }}>
                   <ul className="terms-list">
                     {parent.children?.map((child) => (
-                      <li key={child.id}>
+                      <li key={child.id} className="terms-sub-item"> {/* 스타일링용 클래스 */}
                         <div className="check-item">
                           <input
                             type="checkbox" id={child.id} className="input"
-                            checked={checkedIds.has(child.id)} onChange={() => handleChildCheck(child.id, parent)}
+                            checked={checkedIds.has(child.id)} 
+                            // 2단계 핸들러 호출 시 child 객체 전체 전달
+                            onChange={() => handleChildCheck(child.id, parent, child)}
                           />
-                          <label htmlFor={child.id}>{child.label}</label>
+                          <label htmlFor={child.id}>
+                            {child.label}
+                            {child.required === false && <span className="optional" style={{color:'#888', marginLeft:'4px'}}>(선택)</span>}
+                          </label>
                         </div>
-                        
-                        {/* --- [수정 5] 자식 항목 상세 보기 버튼 연결 --- */}
-                        <button 
-                          type="button" 
-                          className="btn-ico-arrow" 
-                          aria-label={`${child.label} 자세히보기`}
-                          onClick={() => openDetailPopup(child)}
-                        ></button>
+                        {/* 2단계 상세 버튼 */}
+                        {!child.hideDetailBtn && (
+                           <button type="button" className="btn-ico-arrow" onClick={() => openDetailPopup(child)}></button>
+                        )}
+
+                        {/* ▼▼▼ [추가] 3단계(Sub-Child) 렌더링 ▼▼▼ */}
+                        {child.children && child.children.length > 0 && (
+                          <ul className="terms-sub-list" style={{ paddingLeft: '20px', marginTop: '8px', background: '#f9f9f9', borderRadius: '4px' }}>
+                            {child.children.map((sub) => (
+                              <li key={sub.id} style={{ padding: '8px 0' }}>
+                                <div className="check-item">
+                                  <input
+                                    type="checkbox" id={sub.id} className="input"
+                                    checked={checkedIds.has(sub.id)}
+                                    // 3단계 핸들러 호출
+                                    onChange={() => handleSubChildCheck(sub.id, parent, child)}
+                                  />
+                                  <label htmlFor={sub.id} style={{ fontSize: '14px' }}>
+                                    {sub.label}
+                                    {sub.required === false && <span className="optional" style={{color:'#888', marginLeft:'4px'}}>(선택)</span>}
+                                  </label>
+                                </div>
+                                {/* 3단계 상세 버튼 (필요시) */}
+                                {!sub.hideDetailBtn && (
+                                   <button type="button" className="btn-ico-arrow" onClick={() => openDetailPopup(sub)}></button>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {/* ▲▲▲ -------------------------- ▲▲▲ */}
+
                       </li>
                     ))}
                   </ul>
