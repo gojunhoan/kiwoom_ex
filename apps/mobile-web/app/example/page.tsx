@@ -8,6 +8,10 @@ import { Accordion } from '../../../../packages/ui/mobile/components/common/Acco
 import { Toggle } from '../../../../packages/ui/mobile/components/common/Toggle';
 import TermsAgreement, { type TermParent } from '../../../../packages/ui/mobile/components/common/TermsAgreement';
 import Link from 'next/link';
+import TextField from '../../../../packages/ui/mobile/components/common/TextField';
+import ImageUploadSection from '../../../../packages/ui/mobile/components/common/ImageUploadSection';
+import LoanDateSelector from '../../../../packages/ui/mobile/components/common/LoanDateSelector';
+import MoneyInput from './components/MoneyInput';
 
 
 export default function ExamplePage() {
@@ -348,7 +352,43 @@ export default function ExamplePage() {
         <section>
           <TermsAgreement items={TERMS_DATA} />          
         </section>
+        <section>
+          <TextField
+            label={
+              <>
+            대출기간 <span className="required" title="필수 입력">*</span>
+            <Tooltip content="클릭해서 열린 툴팁입니다. 닫기 버튼으로 닫으세요.">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded">
+              툴팁
+            </button>
+          </Tooltip> </>
+            }
+            inputMode="numeric"
+            unitText="개월"
+            unitLayout="two"
+            clearable={false}
+            error="abcdefg"
+            quickButtons={[
+              { label: "+1년", type: "add", value: 12 },
+              { label: "+5년", type: "add", value: 60 },
+              { label: "+10년", type: "add", value: 120 },
+              { label: "최대기간", type: "set", value: 360 },
+            ]}
+            minValue={1}
+            maxValue={360}
+          />
+        </section>
+        <section>
+          <ImageUploadSection />
+        </section>
         
+        <section>
+          <MoneyInput />
+        </section>
+        
+        <section>
+          <LoanDateSelector />
+        </section>
       </div>
     </KyMoLayout>
   );

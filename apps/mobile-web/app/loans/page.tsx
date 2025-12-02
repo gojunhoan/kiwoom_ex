@@ -5,17 +5,17 @@ import TextField from "../../../../packages/ui/mobile/components/common/TextFiel
 import { Radio, RadioGroup } from "../../../../packages/ui/mobile/components/common/Radio";
 import Button from "../../../../packages/ui/mobile/components/common/Button";
 import SelectBox, { type OptionType } from "../../../../packages/ui/mobile/components/common/SelectBox";
-import LoanStep from './LoanStep';
+import LoanStep from "./LoanStep";
 
 export default function LoanPage() {
   
   // 명의자 선택
-  const OWNER_OPTIONS1: OptionType[] = [
+    const OWNER_OPTIONS1: OptionType[] = [
     { value: "본인", label: "본인" },
     { value: "배우자", label: "배우자" },
     { value: "공동명의", label: "공동명의(본인+배우자)" },
     { value: "기타", label: "기타" },
-  ];
+    ];
 
   // 명의자 선택1
   const OWNER_OPTIONS: OptionType[] = [
@@ -27,14 +27,13 @@ export default function LoanPage() {
 
   return (
     <KyMoLayout 
-      title="가계주택담보대출 신청"bottom={
-        <div className="btn-group">
-          <Button variant="pri"  disabledClassOnly>
-            다음
-          </Button>
-        </div>
-      }
+      title="가계주택담보대출 신청"
+      showHome={false}
+      hideTitle
+    //   showCancel={true}
+      // showMenu={false} 기본값 false 
     >
+      <div className="ky-mo-contents">
         <LoanStep 
           title="고객정보 입력" 
           currentStep={1} 
@@ -58,6 +57,7 @@ export default function LoanPage() {
             <SelectBox
               title="명의자" 
               options={OWNER_OPTIONS1} 
+              defaultValue="본인"
             />
           </div>
           <h3 className="tit-h6">주택정보</h3>
@@ -162,6 +162,12 @@ export default function LoanPage() {
             />
           </div>
         </div>
+      </div>
+      <div className="bottom-area">
+        <div className="btn-group">
+          <Button variant="pri" disabledClassOnly>다음</Button>
+        </div>
+      </div>
     </KyMoLayout>
   );
 }

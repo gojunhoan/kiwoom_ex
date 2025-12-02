@@ -9,7 +9,6 @@ type KyMoLayoutProps = {
   showCancel?: boolean;
   showMenu?: boolean;
   hideTitle?: boolean;
-  bottom?: React.ReactNode;
 };
 
 export default function KyMoLayout({
@@ -20,7 +19,6 @@ export default function KyMoLayout({
   showCancel = true,
   showMenu = false,
   hideTitle = false,
-  bottom,
 }: KyMoLayoutProps) {
   return (
     <div className="ky-mo-wrap">
@@ -34,15 +32,7 @@ export default function KyMoLayout({
       />
 
       <main className="ky-mo-container" id="main">
-        <div className="ky-mo-contents">
-          {children}
-        </div>
-
-        {bottom && (
-          <div className="bottom-area">
-            {bottom}
-          </div>
-        )}
+        {children}
       </main>
     </div>
   );
