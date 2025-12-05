@@ -53,7 +53,7 @@
       border-radius: 50%;
       color: kvar.$white;
       @include kmix.ky-desc(1.3rem, 500, 2.4rem);
-      background-color: #ddd;
+      background-color: #e7e7e7;
       text-align: center;
       display: flex;
       align-items: center;
@@ -81,6 +81,339 @@
           background-size: 2.4rem;
         }
       }
+    }
+  }
+}
+
+/* 상품선택 */
+.product-select-wrap {
+  width: 100%;
+  max-width: 50rem;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .product-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    li {
+      .product-card {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        background: #fff;
+        border: 0.1rem solid #e7e7e7;
+        border-radius: 1.2rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
+
+        .badge {
+          display: inline-block;
+          font-size: 1.1rem;
+          color: kvar.$ky-primary;
+          border: 0.1rem solid rgba(kvar.$ky-primary, 0.2);
+          background: #fff;
+          padding: 0.2rem 0.6rem;
+          border-radius: 0.4rem;
+          margin-bottom: 0.8rem;
+          font-weight: 500;
+        }
+
+        .product-name {
+          display: block;
+          font-size: 1.6rem;
+          color: #1a1a1a;
+          font-weight: 600;
+          margin-bottom: 1.2rem;
+        }
+
+        .product-info {
+          display: flex;
+          align-items: center;
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: #1a1a1a;
+
+          .rate {
+            color: #1a1a1a;
+          }
+
+          .divider {
+            display: inline-block;
+            width: 0.1rem;
+            height: 1.2rem;
+            background: #e7e7e7;
+            margin: 0 1.2rem;
+          }
+          
+          .limit {
+            color: #1a1a1a;
+          }
+        }
+
+        &:hover {
+          border-color: #bbb;
+        }
+      }
+
+      &.selected {
+        .product-card {
+          background: #fff5f9;
+          border: 1px solid kvar.$ky-primary;
+          box-shadow: 0 0 0 1px kvar.$ky-primary inset;
+
+          .product-name {
+            color: kvar.$ky-primary;
+          }
+          
+          .badge {
+             background: #fff; 
+             border-color: #fcecf4;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* 상품 상단 sticky */
+.sticky-sentinel {
+  width: 100%;
+  height: 1px;
+  background: transparent;
+  pointer-events: none;
+  margin-bottom: -1px;
+}
+
+.product-sticky-info-area {
+  width: 100%;
+  position: sticky;
+  top: 5.6rem;
+  z-index: 100;
+  transition: all 0.3s ease;
+
+  .inner-content {
+    padding: 2rem;
+    border-radius: 1.2rem;
+    background-color: #FBF2F7;
+    
+    .tit {
+      margin: 0 0 1.6rem 0;
+      padding-bottom: 1.2rem;
+      color: #d62483;
+      font-size: 1.6rem;
+      font-weight: 600;
+      border-bottom: 0.1rem solid #E9DFE3;
+    }
+
+    .info-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .label {
+          font-size: 1.4rem;
+          color: #666;
+          font-weight: 400;
+        }
+
+        .value-group {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 0.4rem;
+        }
+
+        .value {
+          font-size: 1.8rem;
+          color: #222;
+          font-weight: 700;
+
+          &.emphasize {
+            font-size: 1.8rem;
+          }
+        }
+
+        .value-text {
+          font-size: 1.3rem;
+          color: #999;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  &.is-sticky {
+    width: calc(100% + 4.8rem);
+    margin: 0 -2.4rem;
+    
+    .inner-content {
+      padding: 2rem 2.4rem;
+      border-radius: 0;
+      background-color: #FBF2F7;
+      box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.05);
+
+      .tit {
+        margin-bottom: 1.6rem;
+        padding-bottom: 1.2rem;
+        color: #d62483;
+        font-size: 1.6rem;
+        font-weight: 600;
+        border-bottom: 0.1rem solid #E9DFE3;
+      }
+    }
+  }
+}
+
+/* 계산기 확인 */
+.loan-interest-info {
+  width: 100%;
+  max-width: 50rem;
+  margin: 0 auto;
+  background-color: #f7f9fc;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  .header-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2.4rem;
+
+    .toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: #0e2b5c;
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: left;
+      
+      .tit {
+        text-decoration: underline;
+        text-underline-offset: 0.4rem;
+        text-decoration-thickness: 0.15rem;
+      }
+
+      .icon-arrow {
+        display: block;
+        width: 0.7rem;
+        height: 0.7rem;
+        border-right: 0.15rem solid #0e2b5c;
+        border-bottom: 0.15rem solid #0e2b5c;
+        transform: rotate(-45deg);
+        transition: transform 0.3s ease;
+        margin-top: 0.2rem;
+      }
+    }
+
+    .calc-link-btn {
+      background: #fff;
+      border: 1px solid #cdd5e1;
+      border-radius: 0.6rem;
+      padding: 0.8rem 1.2rem;
+      font-size: 1.3rem;
+      color: #0e2b5c;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+  }
+
+  .content-area {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    padding: 0 2.4rem;
+    
+    .inner-wrapper {
+      padding-bottom: 2.4rem;
+    }
+
+    .result-card {
+      background: #fff;
+      border-radius: 1.2rem;
+      padding: 2.4rem;
+      text-align: center;
+      margin-bottom: 1.6rem;
+      box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.03);
+
+      .description {
+        font-size: 1.5rem;
+        color: #222;
+        line-height: 1.5;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+
+        .highlight {
+          color: #2e599c;
+          font-weight: 700;
+        }
+      }
+
+      .result-text {
+        font-size: 1.6rem;
+        color: #222;
+        font-weight: 700;
+
+        .amount {
+          color: #2e599c;
+          font-size: 1.8rem;
+        }
+      }
+    }
+
+    .disclaimer {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 1.3rem;
+      color: #888;
+      line-height: 1.5;
+
+      .icon-info {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 1.6rem;
+        height: 1.6rem;
+        border: 1px solid #aaa;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        color: #aaa;
+      }
+    }
+  }
+
+  &.active {
+    .header-area {
+      .toggle-btn {
+        .icon-arrow {
+          transform: rotate(-225deg);
+          margin-top: 0.5rem;
+        }
+      }
+    }
+
+    .content-area {
+      max-height: 50rem;
     }
   }
 }

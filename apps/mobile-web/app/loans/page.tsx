@@ -78,6 +78,13 @@ export default function LoanPage() {
               readOnly
             />
             <TextField
+              label="주소"
+              placeholder="검색 후 자동입력"
+              btnInner
+              wrapperClassName="inner-btn"
+              id="addr11"
+            />
+            <TextField
               placeholder="동, 호수입력"
               title="상세주소 입력"
               hint=""

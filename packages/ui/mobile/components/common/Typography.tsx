@@ -15,7 +15,7 @@ export const Title = ({ level, children, as, className = '' }: TitleProps) => {
 };
 
 // TextList
-type ListType = 'dot' | 'dash' | 'remark';
+type ListType = 'default' | 'dot' | 'dash' | 'remark';
 interface TextListProps {
   type: ListType;
   items: React.ReactNode[];

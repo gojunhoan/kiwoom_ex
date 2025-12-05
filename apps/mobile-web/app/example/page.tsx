@@ -10,8 +10,13 @@ import TermsAgreement, { type TermParent } from '../../../../packages/ui/mobile/
 import Link from 'next/link';
 import TextField from '../../../../packages/ui/mobile/components/common/TextField';
 import ImageUploadSection from '../../../../packages/ui/mobile/components/common/ImageUploadSection';
-import LoanDateSelector from '../../../../packages/ui/mobile/components/common/LoanDateSelector';
+import DateSelect from './components/DateSelect';
 import MoneyInput from './components/MoneyInput';
+import DateSelector from '../../../../packages/ui/mobile/components/common/DateSelector';
+import SearchAccordion from "../../../../packages/ui/mobile/components/common/SearchAccordion";
+import ProductSelect from "../../../../packages/ui/mobile/components/common/ProductSelect";
+import ProductStickyInfo from './components/ProductStickyInfo';
+import LoanInterestInfo from './components/LoanInterestInfo';
 
 
 export default function ExamplePage() {
@@ -172,6 +177,101 @@ export default function ExamplePage() {
     },
   ];
 
+  // 데이터 선언
+const SEARCH_RESULTS = [
+  { id: 1, name: "상도 현대아파트", address: "서울 동작구 상도동" },
+  { id: 2, name: "상도 IPARK (현대)", address: "서울 동작구 상도동" },
+];
+
+const AREA_OPTIONS = [
+  { id: 1, label: "72.99/59.72m2(24평)" },
+  { id: 2, label: "103.82/84.87m2(34평)" },
+];
+
+const FLOOR_OPTIONS = [
+  { id: 1, label: "1층" },
+  { id: 2, label: "1층 아님" },
+];
+
+// 상품 선택
+const PRODUCT_LIST = [
+  { 
+    id: 1, 
+    tag: "신용", 
+    name: "키움예스론", 
+    rate: "19.93%", 
+    limit: "8,000만원" 
+  },
+  { 
+    id: 2, 
+    tag: "신용", 
+    name: "햇살론", 
+    rate: "11.99%", 
+    limit: "3,000만원" 
+  },
+  { 
+    id: 3, 
+    tag: "신용", 
+    name: "사잇돌2", 
+    rate: "18.55%", 
+    limit: "3,000만원" 
+  },
+  { 
+    id: 4, 
+    tag: "신용+담보", 
+    name: "오토론", 
+    rate: "19.50%", 
+    limit: "1,000만원" 
+  },
+  { 
+    id: 5, 
+    tag: "신용+담보", 
+    name: "오토플러스론", 
+    rate: "19.50%", 
+    limit: "1,500만원" 
+  }
+];
+
+const LOAN_INFO = {
+    title: "가계주택담보대출",
+    rate: "5.16%",
+    limit: "15,000만원",
+    limitText: "일억 오천만원" // 필요 없으면 null 또는 빈 문자열
+  };
+
+  // CASE 1: 원리금균등 (기본)
+  /*
+  const INTEREST_DATA = {
+    amount: "1억 2000만원",
+    period: "5년",
+    method: "원리금균등",
+    payment1: "131만 1,832원",
+    disclaimer: "대출 실행시 적용되는 금리와 상환방식에 따라 실제 납입하는 이자납입액과는 차이가 있습니다."
+  };
+  */
+
+  // CASE 2: 원금균등 (첫달/마지막달 다름)
+  /*
+  const INTEREST_DATA = {
+    amount: "1억 2000만원",
+    period: "5년",
+    method: "원금균등",
+    payment1: "151만 7,832원", // 첫달
+    payment2: "100만 578원",   // 마지막달
+    disclaimer: "대출 실행시 적용되는 금리와 상환방식에 따라 실제 납입하는 이자납입액과는 차이가 있습니다."
+  };
+  */
+
+  // CASE 3: 만기일시상환 (매달 이자 + 마지막달 원금)
+  const INTEREST_DATA = {
+    amount: "1억 2000만원",
+    period: "5년",
+    method: "만기일시상환",
+    payment1: "53만 1,832원",  // 매달
+    payment2: "1억 2000원",    // 마지막달 (이미지 텍스트 그대로 적용)
+    disclaimer: "대출 실행시 적용되는 금리와 상환방식에 따라 실제 납입하는 이자납입액과는 차이가 있습니다."
+  };
+
   return (
     <KyMoLayout 
       title="가계주택담보대출 신청"
@@ -180,6 +280,18 @@ export default function ExamplePage() {
       // showMenu={false} 기본값 false 
     >
       <div className="ky-mo-contents">
+        <ProductStickyInfo 
+          title={LOAN_INFO.title}
+          rate={LOAN_INFO.rate}
+          limit={LOAN_INFO.limit}
+          limitText={LOAN_INFO.limitText}
+        />
+        <section className="mb-8">
+          <LoanInterestInfo data={INTEREST_DATA} />
+        </section>
+        <section className="mb-8">
+          <ProductSelect productList={PRODUCT_LIST} />
+        </section>
         <section className="mb-8">
         <Title level={1}>기본 h1 태그입니다.</Title>
         <Title level={2}>기본 h2 태그입니다.</Title>
@@ -387,7 +499,15 @@ export default function ExamplePage() {
         </section>
         
         <section>
-          <LoanDateSelector />
+          <DateSelect />
+        </section>
+        
+        <section>
+          <SearchAccordion 
+        searchResults={SEARCH_RESULTS}
+        areaOptions={AREA_OPTIONS}
+        floorOptions={FLOOR_OPTIONS}
+      />
         </section>
       </div>
     </KyMoLayout>

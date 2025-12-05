@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useRef, useState } from "react";
+import React, { useId, useRef, useState, useEffect } from "react";
 import clsx from "clsx";
 import Field from "./Field";
 
@@ -23,6 +23,8 @@ type TextFieldProps = Omit<
   unitLayout?: UnitLayout;
   clearable?: boolean;
   searchable?: boolean;
+  btnInner?: boolean;
+  btnInnerText?: string;
   wrapperClassName?: string;
   quickButtons?: QuickButton[];
   quickButtonsAriaLabel?: string;
@@ -52,6 +54,8 @@ export default function TextField({
   unitLayout = "none",
   clearable,
   searchable,
+  btnInner,
+  btnInnerText = "검색",
   className,
   wrapperClassName,
   onChange,
@@ -78,6 +82,17 @@ export default function TextField({
   const messageId = displayMessage ? `${inputId}-hint` : undefined;
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const innerBtnRef = useRef<HTMLButtonElement>(null);
+
+  const [innerBtnWidth, setInnerBtnWidth] = useState(0);
+
+  useEffect(() => {
+    if (btnInner && innerBtnRef.current) {
+      setInnerBtnWidth(innerBtnRef.current.offsetWidth);
+    } else {
+      setInnerBtnWidth(0);
+    }
+  }, [btnInner, btnInnerText]);
 
   const isControlled = value !== undefined;
 
@@ -195,7 +210,11 @@ export default function TextField({
   let clearRight: string | undefined;
 
   if (isClearEnabled && hasValue && isGroupFocused && !readOnly) {
-    if (searchable) {
+    if (btnInner && innerBtnWidth > 0) {
+      const rightPos = innerBtnWidth + 16;
+      clearRight = `${rightPos}px`;
+      paddingRight = `${rightPos - 24}px`;
+    } else if (searchable) {
       paddingRight = "6.2rem";
       clearRight = "4.8rem";
     } else if (unitLayout === "one") {
@@ -208,18 +227,14 @@ export default function TextField({
       paddingRight = "4rem";
       clearRight = "1.6rem";
     }
+  } else if (btnInner && innerBtnWidth > 0) {
+    paddingRight = `${innerBtnWidth + 16}px`;
   }
 
   const inputStyle: React.CSSProperties = {
     ...(inputStyleProp || {}),
     ...(paddingRight ? { paddingRight } : null),
   };
-
-  const rootClassName = clsx(
-    "ipt-group",
-    isError && "error",
-    wrapperClassName
-  );
 
   const labelNode = label ? (
     <>
@@ -234,7 +249,7 @@ export default function TextField({
       label={labelNode}
       hint={undefined}
       error={isError}
-      className={rootClassName}
+      className={wrapperClassName}
     >
       <div
         className={clsx(
@@ -283,6 +298,18 @@ export default function TextField({
             aria-label="검색"
             tabIndex={-1}
           />
+        )}
+
+        {btnInner && (
+          <button
+            ref={innerBtnRef}
+            type="button"
+            className="btn md btn-outline gray"
+            aria-label={btnInnerText}
+            tabIndex={-1}
+          >
+            {btnInnerText}
+          </button>
         )}
 
         {unitText && (
